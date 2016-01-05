@@ -5,6 +5,9 @@
 # includes several helpers that could help to solve these problems.
 #
 module Greeb::Parser extend self
+  USERNAME=%r{\@[a-z\_\.\-\d]+}i
+
+
   # An URL pattern. Not so precise, but IDN-compatible.
   #
   URL = %r{\b(([\w-]+://?|www[.])[^\s()<>]+(?:\([\p{L}\w\d]+\)|([^.\s]|/)))\.*}i
@@ -32,6 +35,10 @@ module Greeb::Parser extend self
   # Together pattern.
   #
   TOGETHER = [:letter, :integer, :apostrophe, :together]
+
+  def username(text)
+    scan(text, USERNAME, :replay)
+  end
 
   # Recognize URLs in the input text. Actually, URL is obsolete standard
   # and this code should be rewritten to use the URI concept.

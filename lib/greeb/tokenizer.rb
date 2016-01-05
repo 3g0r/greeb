@@ -7,7 +7,7 @@ require 'json'
 #
 module Greeb::Tokenizer extend self
   LI = /([\p{L}]+ ли)\b/u
-  NI = /(н[ие] [\p{L}]+)\b/u
+  NI = /(н[ие] [\p{L}]+)\b/iu
   Bb1 = /([\p{L}]+ бы?)\b/u
   GEG = /([\p{L}]+ жеж?)\b/u
   KA = /([\p{L}]+[\- ]ка)\b/u
@@ -16,12 +16,9 @@ module Greeb::Tokenizer extend self
   DATE = /(\d?\d[\.\/]\d?\d[\/ \.]\d{4}|\d?\d[\/ \.]\d?\d[\/ \.]\d{2})/
   DATE2 = /(\d?\d[\/ \.](янв|фев|мар|апр|ма[яй]|июн|июл|авг|сент|окт|ноя|дек)[\p{L}]{0,9}[\/ \.](\d{4}|\d{2}))/
   TIME = /\d?\d[\.\:]\d?\d/
-  HAPPINESS = /\:\)+/u
-  SAD = /\:\(+/u
-  HAPPINESS2 = /\:D+/u
-  EMAIL=%r{[a-z\_\.\+\%\-\d]+\@[a-z\_\.\-\d]+\.[a-z]+}i
-  USERNAME=%r{\@[a-z\_\.\-\d]+}i
-
+  HAPPINESS = /[\:\=\%]-?[D\)]+/u
+  SAD = /[\:\=\%]-?\(+/u
+  
   # English and Russian letters.
   #
   LETTERS = /[\p{L}]+/u
@@ -68,18 +65,19 @@ module Greeb::Tokenizer extend self
     scanner = Greeb::StringScanner.new(text)
     tokens = []
     while !scanner.eos?
-      parse! scanner, tokens, EMAIL, :letter or
-      parse! scanner, tokens, USERNAME, :letter or
-      parse! scanner, tokens, LI, :letter or
+      
+      # parse! scanner, tokens, LI, :letter or
+      
       parse! scanner, tokens, NI, :letter or
-      parse! scanner, tokens, Bb1, :letter or
-      parse! scanner, tokens, GEG, :letter or
-      parse! scanner, tokens, KA, :letter or
-      parse! scanner, tokens, TO, :letter or
+      
+      # parse! scanner, tokens, Bb1, :letter or
+      # parse! scanner, tokens, GEG, :letter or
+      # parse! scanner, tokens, KA, :letter or
+      # parse! scanner, tokens, TO, :letter or
+      
       parse! scanner, tokens, TAKI, :letter or
       parse! scanner, tokens, HAPPINESS, :letter or
-      parse! scanner, tokens, SAD, :letter or
-      parse! scanner, tokens, HAPPINESS2, :letter or
+      parse! scanner, tokens, SAD, :letter or         
       parse! scanner, tokens, DATE, :letter or
       parse! scanner, tokens, DATE2, :letter or
       parse! scanner, tokens, TIME, :letter or
