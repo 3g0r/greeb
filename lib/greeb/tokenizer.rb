@@ -16,8 +16,8 @@ module Greeb::Tokenizer extend self
   DATE = /(\d?\d[\.\/]\d?\d[\/ \.]\d{4}|\d?\d[\/ \.]\d?\d[\/ \.]\d{2})/
   DATE2 = /(\d?\d[\/ \.](янв|фев|мар|апр|ма[яй]|июн|июл|авг|сент|окт|ноя|дек)[\p{L}]{0,9}[\/ \.](\d{4}|\d{2}))/
   TIME = /\d?\d[\.\:]\d?\d/
-  HAPPINESS = /[\:\=\%]-?[D\)]+/u
-  SAD = /[\:\=\%]-?\(+/u
+  HAPPINESS = /[\:\=\%][\-\+]?[D\)]+/u
+  SAD = /[\:\=\%][\-\+]?\(+/u
   
   # English and Russian letters.
   #
