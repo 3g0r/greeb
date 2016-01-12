@@ -7,7 +7,7 @@ module Greeb::Core
   # Greeb::Core uses several helpers from Greeb::Parser to perform
   # additional analysis using there heuristic methods.
   #
-  HELPERS = [:urls, :emails, :username, :abbrevs, :time]
+  HELPERS = Greeb::Parser::DEFAULT
 
   # Recognize e-mail addresses in the input text.
   #

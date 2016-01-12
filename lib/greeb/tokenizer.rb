@@ -6,19 +6,6 @@ require 'json'
 # <http://www.fileformat.info/info/unicode/category/index.htm>.
 #
 module Greeb::Tokenizer extend self
-  LI = /([\p{L}]+ ли)\b/u
-  NI = /(н[ие] [\p{L}]+)\b/iu
-  Bb1 = /([\p{L}]+ бы?)\b/u
-  GEG = /([\p{L}]+ жеж?)\b/u
-  KA = /([\p{L}]+[\- ]ка)\b/u
-  TO = /([\p{L}]+[\- ]то)\b/u
-  TAKI = /(вс[её] ?- ?таки)\b/u
-  DATE = /(\d?\d[\.\/]\d?\d[\/ \.]\d{4}|\d?\d[\/ \.]\d?\d[\/ \.]\d{2})/
-  DATE2 = /(\d?\d[\/ \.](янв|фев|мар|апр|ма[яй]|июн|июл|авг|сент|окт|ноя|дек)[\p{L}]{0,9}[\/ \.](\d{4}|\d{2}))/
-  TIME = /\d?\d[\.\:]\d?\d/
-  HAPPINESS = /[\:\=\%][\-\+]?[D\)]+/u
-  SAD = /[\:\=\%][\-\+]?\(+/u
-  
   # English and Russian letters.
   #
   LETTERS = /[\p{L}]+/u
@@ -65,22 +52,6 @@ module Greeb::Tokenizer extend self
     scanner = Greeb::StringScanner.new(text)
     tokens = []
     while !scanner.eos?
-      
-      # parse! scanner, tokens, LI, :letter or
-      
-      parse! scanner, tokens, NI, :letter or
-      
-      # parse! scanner, tokens, Bb1, :letter or
-      # parse! scanner, tokens, GEG, :letter or
-      # parse! scanner, tokens, KA, :letter or
-      # parse! scanner, tokens, TO, :letter or
-      
-      parse! scanner, tokens, TAKI, :letter or
-      parse! scanner, tokens, HAPPINESS, :letter or
-      parse! scanner, tokens, SAD, :letter or         
-      parse! scanner, tokens, DATE, :letter or
-      parse! scanner, tokens, DATE2, :letter or
-      parse! scanner, tokens, TIME, :letter or
       parse! scanner, tokens, LETTERS, :letter or
       parse! scanner, tokens, FLOATS, :float or
       parse! scanner, tokens, INTEGERS, :integer or

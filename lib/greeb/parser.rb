@@ -5,91 +5,21 @@
 # includes several helpers that could help to solve these problems.
 #
 module Greeb::Parser extend self
-  USERNAME=%r{\@[a-z\_\.\-\d]+}i
 
-
-  # An URL pattern. Not so precise, but IDN-compatible.
-  #
-  URL = %r{\b(([\w-]+://?|www[.])[^\s()<>]+(?:\([\p{L}\w\d]+\)|([^.\s]|/)))\.*}i
-
-  # A horrible e-mail pattern.
-  #
-  EMAIL = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/i
-
-  # Another horrible pattern. Now for abbreviations.
-  #
-  ABBREV = /\b((-{0,1}\p{L}\.)*|(-{0,1}\p{L}\. )*)-{0,1}\p{L}\./i
-
-  # This pattern matches anything that looks like HTML. Or not.
-  #
-  HTML = /<(.*?)>/i
-
-  # Time pattern.
-  #
-  TIME = /\b(\d|[0-2]\d):[0-6]\d(:[0-6]\d){0,1}\b/i
+  helpers = []
+  Greeb::ParserConfig::CONFIG.each{|replacer|
+    helpers.push replacer[:name]
+    self.send(:define_method,replacer[:name]) do |text|
+      scan(text, replacer[:regexp], replacer[:type] || replacer[:name])
+    end
+  }
+  DEFAULT = helpers.clone
+  helpers.push :apostrophes
+  TOGETHER = helpers
 
   # Apostrophe pattern.
   #
   APOSTROPHE = /['’]/i
-
-  # Together pattern.
-  #
-  TOGETHER = [:letter, :integer, :apostrophe, :together]
-
-  def username(text)
-    scan(text, USERNAME, :replay)
-  end
-
-  # Recognize URLs in the input text. Actually, URL is obsolete standard
-  # and this code should be rewritten to use the URI concept.
-  #
-  # @param text [String] input text.
-  #
-  # @return [Array<Greeb::Span>] found URLs.
-  #
-  def urls(text)
-    scan(text, URL, :url)
-  end
-
-  # Recognize e-mail addresses in the input text.
-  #
-  # @param text [String] input text.
-  #
-  # @return [Array<Greeb::Span>] found e-mail addresses.
-  #
-  def emails(text)
-    scan(text, EMAIL, :email)
-  end
-
-  # Recognize abbreviations in the input text.
-  #
-  # @param text [String] input text.
-  #
-  # @return [Array<Greeb::Span>] found abbreviations.
-  #
-  def abbrevs(text)
-    scan(text, ABBREV, :abbrev)
-  end
-
-  # Recognize HTML-alike entities in the input text.
-  #
-  # @param text [String] input text.
-  #
-  # @return [Array<Greeb::Span>] found HTML entities.
-  #
-  def html(text)
-    scan(text, HTML, :html)
-  end
-
-  # Recognize timestamps in the input text.
-  #
-  # @param text [String] input text.
-  #
-  # @return [Array<Greeb::Span>] found HTML entities.
-  #
-  def time(text)
-    scan(text, TIME, :time)
-  end
 
   # Retrieve apostrophes from the tokenized text. The algorithm may be
   # more optimal.
