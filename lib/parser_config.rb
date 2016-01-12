@@ -14,8 +14,8 @@ module Greeb::ParserConfig extend self
     {name: :date,         regexp: /(\d?\d[\.\/]\d?\d[\/ \.]\d{4}|\d?\d[\/ \.]\d?\d[\/ \.]\d{2})/},
     {name: :date2,        regexp: /(\d?\d[\/ \.](янв|фев|мар|апр|ма[яй]|июн|июл|авг|сент|окт|ноя|дек)[\p{L}]{0,9}[\/ \.](\d{4}|\d{2}))/, type: :date},
     {name: :time,         regexp: /\b(|[0-2]?\d):[0-6]\d(:[0-6]\d){0,1}\b/i},
-    {name: :happiness,    regexp: /[\:\=\%][\-\+]?[D\)]+/u},
-    {name: :sad,          regexp: /[\:\=\%][\-\+]?\(+/u},
+    {name: :happiness,    regexp: /[\:\=\%\;][\-]?[D\)]+/u},
+    {name: :sad,          regexp: /[\:\=\%\;][\-]?\(+/u},
     {name: :abbrev,       regexp: /\b((-{0,1}\p{L}\.)*|(-{0,1}\p{L}\. )*)-{0,1}\p{L}\./i},
     {name: :html,         regexp: /<(.*?)>/i}
   ]
